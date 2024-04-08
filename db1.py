@@ -43,7 +43,5 @@ def execute_query(query):
 # Example usage:
 if __name__ == "__main__":
     # Replace the query below with your SQL query
-    query = '''CREATE TABLE clutch(
-    name VARCHAR,url VARCHAR
-    );'''
+    query = '''INSERT INTO clutch VALUES ('ankur','aws.com');'''
     execute_query(query)
