@@ -27,6 +27,9 @@ def execute_query(query):
         # Execute the query
         cursor.execute(query)
 
+        result = cursor.fetchall()
+        print(result)
+
         # Commit the transaction
         connection.commit()
 
