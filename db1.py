@@ -46,5 +46,5 @@ def execute_query(query):
 # Example usage:
 if __name__ == "__main__":
     # Replace the query below with your SQL query
-    query = '''INSERT INTO clutch VALUES ('ankur','aws.com');'''
+    query = '''select * from clutch;'''
     execute_query(query)
