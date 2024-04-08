@@ -49,12 +49,52 @@ def insert_data(data):
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL:", error)
 
+
+def get_data(query):
+
+    try:
+        # Connect to the PostgreSQL database
+        connection = psycopg2.connect(
+            host=host,
+            port=port,
+            database=database,
+            user=user,
+            password=password
+        )
+
+        # Create a cursor object
+        cursor = connection.cursor()
+
+
+        # Execute the query for each record
+        cursor.execute(query)
+
+        # Commit the transaction
+
+        result = cursor.fetchall()
+
+        for item in result:
+            print(item,'\n')
+
+        connection.commit()
+
+        # Close cursor and connection
+        cursor.close()
+        connection.close()
+
+        print(f"Successfully got {len(result)} records into the 'clutch' table.")
+
+    except (Exception, psycopg2.Error) as error:
+        print("Error while connecting to PostgreSQL:", error)
+
+
 if __name__ == "__main__":
     # Number of records to generate and insert
     num_records = 30
+    query = "select * from clutch;"
 
     # Generate random data
-    data = generate_random_data(num_records)
+    # data = generate_random_data(num_records)
 
     # Insert data into PostgreSQL
-    insert_data(data)
+    get_data(query)
