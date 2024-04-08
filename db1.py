@@ -1,15 +1,22 @@
 import psycopg2
 from psycopg2 import Error
 
+from faker import Faker
+
 host = "bi.cf2m8k4ao692.ap-south-1.rds.amazonaws.com"
 port = "3307"
 database = "woo"
 user = "ankur"
 password = "ankur1903"
 
-def execute_query(query):
-    # Define database connection parameters
-    
+
+
+def generate_random_data(num_records):
+    fake = Faker()
+    data = [(fake.name(), fake.url()) for _ in range(num_records)]
+    return data
+
+def insert_data(data):
 
     try:
         # Connect to the PostgreSQL database
@@ -24,11 +31,11 @@ def execute_query(query):
         # Create a cursor object
         cursor = connection.cursor()
 
-        # Execute the query
-        cursor.execute(query)
+        # Prepare the SQL statement
+        sql = "INSERT INTO clutch (name, url) VALUES (%s, %s)"
 
-        result = cursor.fetchall()
-        print(result)
+        # Execute the query for each record
+        cursor.executemany(sql, data)
 
         # Commit the transaction
         connection.commit()
@@ -37,14 +44,17 @@ def execute_query(query):
         cursor.close()
         connection.close()
 
-        print("query executed successfully...")
+        print(f"Successfully inserted {len(data)} records into the 'clutch' table.")
 
-    except (Exception, Error) as error:
+    except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL:", error)
-        
 
-# Example usage:
 if __name__ == "__main__":
-    # Replace the query below with your SQL query
-    query = '''select * from clutch;'''
-    execute_query(query)
+    # Number of records to generate and insert
+    num_records = 30
+
+    # Generate random data
+    data = generate_random_data(num_records)
+
+    # Insert data into PostgreSQL
+    insert_data(data)
