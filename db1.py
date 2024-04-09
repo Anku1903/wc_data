@@ -57,7 +57,6 @@ def get_data(query):
         connection = psycopg2.connect(
             host=host,
             port=port,
-            database=database,
             user=user,
             password=password
         )
