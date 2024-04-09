@@ -59,7 +59,8 @@ def get_data(query):
             port=port,
             user=user,
             database=database,
-            password=password
+            password=password,
+            autocommit=True
         )
 
         # Create a cursor object
