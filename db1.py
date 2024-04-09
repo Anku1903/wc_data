@@ -58,7 +58,7 @@ def get_data(query):
             host=host,
             port=port,
             user=user,
-            database=database
+            database=database,
             password=password
         )
 
