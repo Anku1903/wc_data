@@ -1,5 +1,6 @@
 import psycopg2
 from psycopg2 import Error
+from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
 from faker import Faker
 
@@ -59,14 +60,11 @@ def get_data(query):
             port=port,
             user=user,
             database=database,
-            password=password,
-            sslmode='require',    # Use SSL mode if required by your RDS instance
-            connect_timeout=5,    # Timeout value in seconds for connection establishment
-            
-            isolation_level=None  
+            password=password
         )
 
         # Create a cursor object
+        connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
         cursor = connection.cursor()
 
 
