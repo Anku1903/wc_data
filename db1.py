@@ -81,7 +81,6 @@ def get_data(query):
         cursor.close()
         connection.close()
 
-        print(f"Successfully got {len(result)} records into the 'clutch' table.")
 
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL:", error)
