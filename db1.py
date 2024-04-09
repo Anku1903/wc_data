@@ -76,10 +76,6 @@ def get_data(query):
 
         connection.commit()
         
-        result = cursor.fetchall()
-
-        for item in result:
-            print(item,'\n')
 
         # Close cursor and connection
         cursor.close()
@@ -94,7 +90,7 @@ def get_data(query):
 if __name__ == "__main__":
     # Number of records to generate and insert
     num_records = 30
-    query = "CREATE DATABASE leads;"
+    query = "CREATE DATABASE IF NOT EXISTS leads;"
 
     # Generate random data
     # data = generate_random_data(num_records)
