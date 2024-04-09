@@ -60,7 +60,10 @@ def get_data(query):
             user=user,
             database=database,
             password=password,
-            autocommit=True
+            sslmode='require',    # Use SSL mode if required by your RDS instance
+            connect_timeout=5,    # Timeout value in seconds for connection establishment
+            
+            isolation_level=None  
         )
 
         # Create a cursor object
