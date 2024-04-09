@@ -5,7 +5,7 @@ from faker import Faker
 
 host = "bi.cf2m8k4ao692.ap-south-1.rds.amazonaws.com"
 port = "3307"
-database = "postgres"
+database = "woo"
 user = "ankur"
 password = "ankur1903"
 
