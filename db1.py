@@ -5,7 +5,7 @@ from faker import Faker
 
 host = "bi.cf2m8k4ao692.ap-south-1.rds.amazonaws.com"
 port = "3307"
-database = "woo"
+database = "postgres"
 user = "ankur"
 password = "ankur1903"
 
@@ -71,12 +71,13 @@ def get_data(query):
 
         # Commit the transaction
 
+
+        connection.commit()
+        
         result = cursor.fetchall()
 
         for item in result:
             print(item,'\n')
-
-        connection.commit()
 
         # Close cursor and connection
         cursor.close()
@@ -91,7 +92,7 @@ def get_data(query):
 if __name__ == "__main__":
     # Number of records to generate and insert
     num_records = 30
-    query = "select * from clutch;"
+    query = "CREATE DATABASE leads;"
 
     # Generate random data
     # data = generate_random_data(num_records)
