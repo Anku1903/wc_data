@@ -89,7 +89,7 @@ def get_data(query):
 if __name__ == "__main__":
     # Number of records to generate and insert
     num_records = 30
-    query = "DROP DATABASE leads;"
+    query = "CREATE DATABASE leads;"
 
     # Generate random data
     # data = generate_random_data(num_records)
