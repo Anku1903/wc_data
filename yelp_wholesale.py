@@ -195,7 +195,7 @@ if __name__ == "__main__":
 
     df = get_data(database_name=DB_NAME,query=GET_QUERY)
 
-    url_size = 5
+    url_size = 500
     urls = df.head(url_size)['url'].tolist()
 
     scrape_multiple_urls(urls)
