@@ -86,7 +86,7 @@ def scrape_yelp_profile(url, proxy=None):
             if rating_element:
                 rating = rating_element.get_text()
         
-        website_element = soup.select_one('div.biz-details-page-container-outer__09f24__pZBzx.css-1qn0b6x a[href*="/biz_redir"]')
+        website_element = soup.select_one('a[href*="/biz_redir?"]')
 
         category_element = soup.select_one('body > yelp-react-root > div:nth-child(1) > div.photoHeader__09f24__nPvHp.css-1qn0b6x > div.photo-header-content-container__09f24__jDLBB.css-1qn0b6x > div.photo-header-content__09f24__q7rNO.css-2wl9y > div > div > span.css-1xfc281 > span:nth-child(1) > a')
         if website_element:
@@ -134,7 +134,7 @@ def scrape_multiple_urls(urls):
 if __name__ == "__main__":
     start_time = time.perf_counter()
 
-    url = "https://www.yelp.com/biz/selini-wayne?osq=Wholesalers"
+    url = "https://www.yelp.com/biz/cosmoprof-glendale?osq=Wholesalers"
 
     scrape_yelp_profile(url)
 
