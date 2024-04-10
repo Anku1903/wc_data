@@ -91,14 +91,6 @@ def get_data(query):
         # Execute the query for each record
         cursor.execute(query)
 
-        data = cursor.fetchall()
-
-        # Get column names
-        col_names = [desc[0] for desc in cursor.description]
-
-        # Create a Pandas DataFrame
-        df = pd.DataFrame(data, columns=col_names)
-
 
         # Commit the transaction
 
@@ -110,23 +102,15 @@ def get_data(query):
         cursor.close()
         connection.close()
 
-        return df
+    
 
 
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL:", error)
-        return None
+        
 
 
 if __name__ == "__main__":
-    query = '''SELECT * FROM yelp_wholesale;'''
+    query = '''TRUNCATE TABLE yelp_wholesale;'''
 
-    results = get_data(query)
-
-    results = results[results['website']!='none']
-
-    results = results[results['website']!='']
-
-    results = results[results['website'].notnull()]
-
-    print(results)
+    get_data(query)
