@@ -26,7 +26,7 @@ def scrape_yelp_profile(url, proxy=None):
     driver_linuxpath = "/usr/bin/chromedriver/chromedriver"
     driver_path = "G:/aws/aws-scraper/chromedriver.exe"
     options = Options()
-    # options.add_argument('--headless=new')
+    options.add_argument('--headless=new')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-gpu')
     options.add_argument('--disable-dev-shm-usage')
@@ -75,8 +75,7 @@ def scrape_yelp_profile(url, proxy=None):
     
 
         category_element = soup.select_one('body > yelp-react-root > div:nth-child(1) > div.photoHeader__09f24__nPvHp.css-1qn0b6x > div.photo-header-content-container__09f24__jDLBB.css-1qn0b6x > div.photo-header-content__09f24__q7rNO.css-2wl9y > div > div > span.css-1xfc281 > span:nth-child(1) > a')
-        if website_element:
-            website = website_element.get_text()
+        
         if category_element:
             category = category_element.get_text()
 
