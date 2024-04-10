@@ -123,6 +123,6 @@ if __name__ == "__main__":
 
     results = get_data(query)
 
-    results = results[results['website']!='none' & results['website']!='']
+    results = results[results['website']!='none']
 
     print(results)
