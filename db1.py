@@ -84,12 +84,21 @@ def get_data(query):
         )
 
         # Create a cursor object
-        connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+        
         cursor = connection.cursor()
 
 
         # Execute the query for each record
         cursor.execute(query)
+
+        data = cursor.fetchall()
+
+        # Get column names
+        col_names = [desc[0] for desc in cursor.description]
+
+        # Create a Pandas DataFrame
+        df = pd.DataFrame(data, columns=col_names)
+
 
         # Commit the transaction
 
@@ -101,18 +110,24 @@ def get_data(query):
         cursor.close()
         connection.close()
 
-        print('query executed...\n')
+        return df
 
 
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL:", error)
+        return None
 
 
 if __name__ == "__main__":
-    query = '''TRUNCATE TABLE yelp_wholesale;'''
+    query = '''SELECT * FROM yelp_wholesale;'''
 
-    get_data(query)
-    
-    records = read_data()
+    results = get_data(query)
 
-    insert_data(records)
+    mask1 = results['website']!='none' & results['website']!=''
+
+    mask2 = results['website']=='none'
+
+    actual_website = results[mask1]
+    none_website = results[mask2]
+
+    print(len(actual_website),"\n",len(none_website))
