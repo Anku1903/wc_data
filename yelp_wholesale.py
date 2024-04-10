@@ -44,7 +44,7 @@ def scrape_yelp_profile(url, proxy=None):
 
 
 
-    driver_linuxpath = "/usr/bin/chromedriver"
+    driver_linuxpath = "/usr/bin/chromedriver/chromedriver"
     options = Options()
     options.add_argument('--headless=new')
     options.add_argument('--no-sandbox')
