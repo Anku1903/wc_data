@@ -16,7 +16,7 @@ def read_data():
     df_path = os.path.abspath('wholesale.csv')
     df = pd.read_csv(df_path)
     df.fillna('',inplace=True)
-    df.astype(str)
+    df = df.astype(str)
     records = df.to_records(index=False)
     return records
 
