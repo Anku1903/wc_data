@@ -86,7 +86,7 @@ def scrape_yelp_profile(url, proxy=None):
             if rating_element:
                 rating = rating_element.get_text()
         
-        website_element = soup.select_one('a[href*="/biz_redir?"]')
+        website_element = soup.select_one('body > yelp-react-root > div:nth-child(1) > div.biz-details-page-container-outer__09f24__pZBzx.css-1qn0b6x > div > div.css-s97lou > div.css-u9z0t > aside > section.css-2entjo > div > div:nth-child(1) > div > div.css-1u1p5a2 > p.css-1p9ibgf > a')
 
         category_element = soup.select_one('body > yelp-react-root > div:nth-child(1) > div.photoHeader__09f24__nPvHp.css-1qn0b6x > div.photo-header-content-container__09f24__jDLBB.css-1qn0b6x > div.photo-header-content__09f24__q7rNO.css-2wl9y > div > div > span.css-1xfc281 > span:nth-child(1) > a')
         if website_element:
