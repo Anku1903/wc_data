@@ -15,8 +15,10 @@ password = "ankur1903"
 def read_data():
     df_path = os.path.abspath('wholesale.csv')
     df = pd.read_csv(df_path)
-    df.fillna('',inplace=True)
     df = df.astype(str)
+    df.fillna('',inplace=True)
+    df.replace('nan','',inplace=True)
+    
     records = df.to_records(index=False)
     return records
 
@@ -107,18 +109,10 @@ def get_data(query):
 
 
 if __name__ == "__main__":
-    query = '''CREATE TABLE yelp_wholesale (
-    name VARCHAR,
-    url VARCHAR,
-    email VARCHAR DEFAULT '',
-    city VARCHAR,
-    page_number VARCHAR,
-    rating VARCHAR DEFAULT '',
-    reviews VARCHAR DEFAULT '',
-    website VARCHAR DEFAULT '',
-    subcategory VARCHAR DEFAULT ''
-);'''
+    query = '''TRUNCATE TABLE yelp_wholesale;'''
 
+    get_data(query)
+    
     records = read_data()
 
     insert_data(records)
