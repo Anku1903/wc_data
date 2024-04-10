@@ -71,21 +71,24 @@ def scrape_yelp_profile(url, proxy=None):
         content = driver.page_source
         soup = BeautifulSoup(content, 'html.parser')
 
-        reviews_element = soup.select_one('div.arrange__09f24__LDfbs.gutter-1-5__09f24__vMtpw.vertical-align-middle__09f24__zU9sE.css-9ul5p9 a[href*="review"]')
+        reviews_element = soup.select_one('body > yelp-react-root > div:nth-child(1) > div.photoHeader__09f24__nPvHp.css-1qn0b6x > div.photo-header-content-container__09f24__jDLBB.css-1qn0b6x > div.photo-header-content__09f24__q7rNO.css-2wl9y > div > div > div.arrange__09f24__LDfbs.gutter-1-5__09f24__vMtpw.vertical-align-middle__09f24__zU9sE.css-9ul5p9 > div.arrange-unit__09f24__rqHTg.arrange-unit-fill__09f24__CUubG.css-v3nuob')
         reviews = ''
         rating = ''
         category = 'None'
         website = 'none'
         if reviews_element:
-            reviews = reviews_element.get_text()
+            reviews_in_element = reviews_element.select_one('span:nth-child(2)').select_one('a')
+            if reviews_in_element:
+                reviews = reviews_in_element.get_text()
+
         if reviews_element:
-            rating_element = reviews_element.parent.find_previous_sibling()
+            rating_element = reviews_element.select_one('span:nth-child(1)')
             if rating_element:
                 rating = rating_element.get_text()
         
-        website_element = soup.select_one('a[href*="/biz_redir?"]')
+        website_element = soup.select_one('div.biz-details-page-container-outer__09f24__pZBzx.css-1qn0b6x a[href*="/biz_redir"]')
 
-        category_element = soup.select_one('body > yelp-react-root > div:nth-child(1) > div.photoHeader__09f24__nPvHp.css-1qn0b6x > div.photo-header-content-container__09f24__jDLBB.css-1qn0b6x > div.photo-header-content__09f24__q7rNO.css-2wl9y > div > div > span.css-1xfc281 > span:nth-child(1)')
+        category_element = soup.select_one('body > yelp-react-root > div:nth-child(1) > div.photoHeader__09f24__nPvHp.css-1qn0b6x > div.photo-header-content-container__09f24__jDLBB.css-1qn0b6x > div.photo-header-content__09f24__q7rNO.css-2wl9y > div > div > span.css-1xfc281 > span:nth-child(1) > a')
         if website_element:
             website = website_element.get_text()
         if category_element:
