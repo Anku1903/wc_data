@@ -119,7 +119,6 @@ if __name__ == "__main__":
     subcategory VARCHAR DEFAULT ''
 );'''
 
-    get_data(query)
     records = read_data()
 
     insert_data(records)
