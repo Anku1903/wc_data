@@ -125,4 +125,8 @@ if __name__ == "__main__":
 
     results = results[results['website']!='none']
 
+    results = results[results['website']!='']
+
+    results = results[results['website'].notnull()]
+
     print(results)
