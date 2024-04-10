@@ -44,7 +44,6 @@ def scrape_yelp_profile(url, proxy=None):
 
 
 
-    driver_path = 'G:/aws/aws-scraper/chromedriver.exe''
     driver_linuxpath = "/usr/bin/chromedriver"
     options = Options()
     options.add_argument('--headless=new')
