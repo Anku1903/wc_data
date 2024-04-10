@@ -123,11 +123,4 @@ if __name__ == "__main__":
 
     results = get_data(query)
 
-    mask1 = results['website']!='none' & results['website']!=''
-
-    mask2 = results['website']=='none'
-
-    actual_website = results[mask1]
-    none_website = results[mask2]
-
-    print(len(actual_website),"\n",len(none_website))
+    print(results)
