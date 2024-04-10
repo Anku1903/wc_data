@@ -11,12 +11,13 @@ import time
 import os
 import random
 
-DB_HOST = "localhost"
-DB_NAME = "yelp"
-DB_USER = "postgres"
-DB_PASSWORD = "ps190320"
-TABLE_NAME = "restaurant"
-GET_QUERY = '''SELECT name, min(url) as url from wholesale WHERE rating = '' GROUP BY name;'''
+DB_HOST = "bi.cf2m8k4ao692.ap-south-1.rds.amazonaws.com"
+DB_NAME = "leads"
+DB_USER = "ankur"
+DB_PASSWORD = "ankur1903"
+DB_PORT = '3307'
+TABLE_NAME = "yelp_wholesale"
+GET_QUERY = f'''SELECT url from {TABLE_NAME} WHERE website = '' GROUP BY url;'''
 
 def scrape_yelp_profile(url, proxy=None):
     ua_path = os.path.abspath('ua.txt')
@@ -34,7 +35,7 @@ def scrape_yelp_profile(url, proxy=None):
     options.add_argument('--start-maximized')
     options.add_argument(f'user-agent={random.choice(ua_list)}')
 
-    driver_service = Service(executable_path=driver_path)
+    driver_service = Service(executable_path=driver_linuxpath)
 
 
     if proxy:
@@ -89,11 +90,10 @@ def scrape_yelp_profile(url, proxy=None):
         item["website"] = str(website).strip()
         item["subcategory"] = str(category).strip()
 
-        print(item)
 
         driver.quit()
 
-        # save_data(profile=item)
+        save_data(item)
         
 
         # Your scraping logic here
@@ -105,23 +105,100 @@ def scrape_yelp_profile(url, proxy=None):
         item['website'] = "none"
         item['subcategory'] = "none"
 
-        # save_data(profile=item)
+        save_data(item)
         driver.quit()
         
     
-        
+   
+def save_data(data):
+
+    try:
+        # Connect to the PostgreSQL database
+        connection = psycopg2.connect(
+            host=DB_HOST,
+            port=DB_PORT,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASSWORD
+        )
+
+        # Create a cursor object
+        cursor = connection.cursor()
+
+        # Prepare the SQL statement
+        sql = f'''UPDATE {TABLE_NAME} SET rating = %s,reviews = %s,website = %s,subcategory = %s WHERE url = %s;'''
+
+        # Execute the query for each record
+        values = (data['rating'],data['reviews'],data['website'],data['subcategory'],data['url'])
+        cursor.execute(sql, values)
+
+        # Commit the transaction
+        connection.commit()
+
+        # Close cursor and connection
+        cursor.close()
+        connection.close()
+
+        print(f"Update Successfully...")
+
+    except (Exception, psycopg2.Error) as error:
+        print("Error while connecting to PostgreSQL:", error)
+
+     
+
+
+def get_data(database_name, query):
+    # PostgreSQL connection parameters
+    conn_params = {
+        "host": DB_HOST,
+        "user": DB_USER,
+        "password": DB_PASSWORD,
+        "dbname": database_name,
+        "port": DB_PORT
+    }
+
+    # Establish a connection to the PostgreSQL database
+    try:
+        conn = psycopg2.connect(**conn_params)
+        cursor = conn.cursor()
+
+        # Execute the query
+        cursor.execute(query)
+
+        # Fetch all data from the query result
+        data = cursor.fetchall()
+
+        # Get column names
+        col_names = [desc[0] for desc in cursor.description]
+
+        # Create a Pandas DataFrame
+        df = pd.DataFrame(data, columns=col_names)
+
+        # Close cursor and connection
+        cursor.close()
+        conn.close()
+
+        return df
+
+    except psycopg2.Error as e:
+        print("Error connecting to PostgreSQL:", e)
+        return None
 
 
 def scrape_multiple_urls(urls):
     for url in urls:
         scrape_yelp_profile(url)
+        time.sleep(random.uniform(1,4))
 
 if __name__ == "__main__":
     start_time = time.perf_counter()
 
-    url = "https://www.yelp.com/biz/san-antonio-flowers-san-antonio?osq=Wholesalers"
+    df = get_data(database_name=DB_NAME,query=GET_QUERY)
 
-    scrape_yelp_profile(url)
+    url_size = 5
+    urls = df.head(url_size)['url'].tolist()
+
+    scrape_multiple_urls(urls)
 
     end_time = time.perf_counter()
     print(f"\nExecution time: ------ {end_time-start_time} secs")
