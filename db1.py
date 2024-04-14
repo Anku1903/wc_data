@@ -11,7 +11,7 @@ database = "leads"
 user = "ankur"
 password = "ankur1903"
 table_name = "woocommerce"
-
+get_query = '''SELECT * from woocommerce WHERE email = '';'''
 
 def read_data():
     df_path = os.path.abspath('woo.csv')
@@ -63,7 +63,7 @@ def insert_data(data):
         print("Error while connecting to PostgreSQL:", error)
 
 
-def get_data(query):
+def perform_query(query):
 
     try:
         # Connect to the PostgreSQL database
@@ -99,20 +99,47 @@ def get_data(query):
 
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL:", error)
-        
+
+
+def get_data(database_name, query):
+    # PostgreSQL connection parameters
+    conn_params = {
+        "host": host,
+        "user": user,
+        "password": password,
+        "dbname": database_name,
+        "port": port
+    }
+
+    # Establish a connection to the PostgreSQL database
+    try:
+        conn = psycopg2.connect(**conn_params)
+        cursor = conn.cursor()
+
+        # Execute the query
+        cursor.execute(query)
+
+        # Fetch all data from the query result
+        data = cursor.fetchall()
+
+        # Get column names
+        col_names = [desc[0] for desc in cursor.description]
+
+        # Create a Pandas DataFrame
+        df = pd.DataFrame(data, columns=col_names)
+
+        # Close cursor and connection
+        cursor.close()
+        conn.close()
+
+        return df
+
+    except psycopg2.Error as e:
+        print("Error connecting to PostgreSQL:", e)
+        return None
+
 
 
 if __name__ == "__main__":
-    query = '''CREATE TABLE woocommerce(
-    website VARCHAR,
-    company VARCHAR,
-    category VARCHAR,
-    rank VARCHAR,
-    email VARCHAR DEFAULT ''
-    );'''
-
-    get_data(query)
-
-    data = read_data()
-
-    insert_data(data)
+    df = 
+    
