@@ -249,7 +249,7 @@ if __name__=='__main__':
     
     df = get_data(database_name=DB_NAME,query=GET_QUERY)
 
-    url_limit = 2
+    url_limit = 3
     urls = df.head(url_limit)['website'].tolist()
     threadlist = []
 
