@@ -11,7 +11,7 @@ database = "leads"
 user = "ankur"
 password = "ankur1903"
 table_name = "woocommerce"
-get_query = '''SELECT * from woocommerce WHERE email = '';'''
+get_query = '''SELECT * from woocommerce WHERE email != '' and email != 'None';'''
 
 def read_data():
     df_path = os.path.abspath('woo.csv')
@@ -141,5 +141,6 @@ def get_data(database_name, query):
 
 
 if __name__ == "__main__":
-    df = 
+    df = get_data(database_name=database,query=get_query)
+    print(df)
     
