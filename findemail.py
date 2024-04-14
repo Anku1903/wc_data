@@ -203,8 +203,9 @@ def save_data(item):
             cur.close()
             conn.close()
 
-
-
+def scrape_multiple(urls):
+    for url in urls:
+        start_scraping(url)
 
 def get_data(database_name, query):
     # PostgreSQL connection parameters
@@ -249,15 +250,16 @@ if __name__=='__main__':
     
     df = get_data(database_name=DB_NAME,query=GET_QUERY)
 
-    url_limit = 3
+    url_limit = 2
     urls = df.head(url_limit)['website'].tolist()
-    threadlist = []
+    scrape_multiple(urls)
+    # threadlist = []
 
-    with ThreadPoolExecutor() as executor:
-        for item in urls:
-            threadlist.append(executor.submit(start_scraping,item))
+    # with ThreadPoolExecutor() as executor:
+    #     for item in urls:
+    #         threadlist.append(executor.submit(start_scraping,item))
         
-        wait(threadlist)
+    #     wait(threadlist)
     
 
     end = time.perf_counter()
