@@ -252,14 +252,14 @@ if __name__=='__main__':
 
     url_limit = 2
     urls = df.head(url_limit)['website'].tolist()
-    scrape_multiple(urls)
-    # threadlist = []
+    
+    threadlist = []
 
-    # with ThreadPoolExecutor() as executor:
-    #     for item in urls:
-    #         threadlist.append(executor.submit(start_scraping,item))
+    with ThreadPoolExecutor() as executor:
+        for item in urls:
+            threadlist.append(executor.submit(start_scraping,item))
         
-    #     wait(threadlist)
+        wait(threadlist)
     
 
     end = time.perf_counter()
