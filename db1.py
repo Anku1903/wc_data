@@ -10,10 +10,11 @@ port = "3307"
 database = "leads"
 user = "ankur"
 password = "ankur1903"
+table_name = "woocommerce"
 
 
 def read_data():
-    df_path = os.path.abspath('wholesale.csv')
+    df_path = os.path.abspath('woo.csv')
     df = pd.read_csv(df_path)
     df = df.astype(str)
     df.fillna('',inplace=True)
@@ -44,16 +45,7 @@ def insert_data(data):
         cursor = connection.cursor()
 
         # Prepare the SQL statement
-        sql = '''INSERT INTO yelp_wholesale (
-    name,
-    url,
-    email,
-    city,
-    page_number,
-    rating,
-    reviews,
-    website,
-    subcategory) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);'''
+        sql = f'''INSERT INTO {table_name} VALUES (%s, %s, %s, %s,%s);'''
 
         # Execute the query for each record
         cursor.executemany(sql, data)
@@ -111,6 +103,16 @@ def get_data(query):
 
 
 if __name__ == "__main__":
-    query = '''TRUNCATE TABLE yelp_wholesale;'''
+    query = '''CREATE TABLE woocommerce(
+    website VARCHAR,
+    company VARCHAR,
+    category VARCHAR,
+    rank VARCHAR,
+    email VARCHAR DEFAULT ''
+    );'''
 
     get_data(query)
+
+    data = read_data()
+
+    insert_data(data)
