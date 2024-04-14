@@ -205,8 +205,15 @@ def save_data(item):
 
 def scrape_multiple(urls):
     for item in urls:
-        scrape_threds(urls=item)
+
+        start = time.perf_counter()
+        start_scraping(item)
         time.sleep(random.uniform(1,3))
+
+        end = time.perf_counter()
+        print(f"executed in {end-start} seconds...\n")
+
+
 
 def scrape_threds(urls):
     
@@ -259,21 +266,21 @@ def get_data(database_name, query):
 
 
 if __name__=='__main__':
-    start = time.perf_counter()
     
     df = get_data(database_name=DB_NAME,query=GET_QUERY)
 
     url_limit = 1000
     urls = df.head(url_limit)['website'].tolist()
 
-    url_threds = []
+    scrape_multiple(urls)
 
-    for i in range(0,1000,2):
-        url_threds.append([urls[i],urls[i+1]])
+    # url_threds = []
 
-    scrape_multiple(url_threds)
+    # for i in range(0,1000,2):
+    #     url_threds.append([urls[i],urls[i+1]])
 
-    end = time.perf_counter()
-    print(f"executed in {end-start} seconds...\n")
+    # scrape_multiple(url_threds)
+
+    
 
 
